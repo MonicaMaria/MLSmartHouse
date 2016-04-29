@@ -5,9 +5,16 @@
  */
 package smartHouse;
 
-import static java.lang.System.console;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -30,33 +37,34 @@ public class NeuralNetwork {
         desiredOutput = new ArrayList<>();
         trainLoaded = false;
     }
-    
-    public void setInputLayer(List<Double> input)
-    {
+
+    public void setInputLayer(List<Double> input) {
         for (int i = 0; i < input.size(); i++) {
             inputLayer.add(input.get(i));
         }
     }
-    
-    public List<Double> getInputLayer () {
+
+    public List<Double> getInputLayer() {
         return inputLayer;
     }
-            
- 
-    public void addOutputLayer(int num)
-    {
+
+    public void addOutputLayer(int num) {
         for (int i = 0; i < num; i++) {
             outputLayer.add(0.0);
         }
     }
 
-     
-    public void addNeurons()
-    {
-        if (outputLayer.size() == 0) {
+    public void addNeurons() throws IOException, ParseException {
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(new FileReader("neurons.json"));
+
+        JSONObject jsonObject = (JSONObject) obj;
+
+        if (outputLayer.isEmpty()) {
             System.out.println("Add neurons error! Empty output layer..");
             return;
         }
+
         for (int i = 0; i < outputLayer.size(); i++) {
             Neuron neuron = new Neuron(inputLayer);
             if (trainLoaded == false) {
@@ -64,10 +72,17 @@ public class NeuralNetwork {
             } else {
                 String label = "n_" + i;
                 List<Double> weights = new ArrayList<>();
-                weights = trainLoad[label];
-                if (!weights) {
+                //weights = trainLoad[label];
+                JSONArray wg = (JSONArray) jsonObject.get(label);
+                Iterator<String> iterator = wg.iterator();
+                while (iterator.hasNext()) {
+                    weights.add(Double.parseDouble(iterator.next()));
+                }
+                if (weights.isEmpty()) {
+                    System.out.println("am ajuns random");
                     neuron.randomize();
                 } else {
+                    System.out.println("am ajuns");
                     neuron.setWeights(weights);
                 }
             }
@@ -76,51 +91,54 @@ public class NeuralNetwork {
 
     }
 
-     
-    public void setDesiredOutput(List<Double> output)
-    {
+    public void setDesiredOutput(List<Double> output) {
         for (int i = 0; i < output.size(); i++) {
             desiredOutput.add(output.get(i));
         }
         startLearn = true;
 
     }
-    
+
     public List<Double> getDesiredOutput() {
         return desiredOutput;
     }
 
-     
-    public void updateWeights(List<Neuron> trainingSet)
-    {
+    public void updateWeights(List<Neuron> trainingSet) {
         if (trainingSet.size() != hiddenLayer.size()) {
             System.out.println("train erorr. more neurons than required!");
             return;
         }
         //hiddenLayer = trainingSet;
         for (int i = 0; i < trainingSet.size(); i++) {
-            hiddenLayer.set(i,trainingSet.get(i));
+            hiddenLayer.set(i, trainingSet.get(i));
         }
     }
 
-    public void saveState()
-    {
-        var outJson = {};
+    public void saveState() throws IOException {
+        JSONObject obj = new JSONObject();
 
         for (int i = 0; i < hiddenLayer.size(); i++) {
             String label = "n_" + i;
-            outJson[label] = hiddenLayer.get(i).weights;
+            Neuron neur = hiddenLayer.get(i);
+            JSONArray list = new JSONArray();
+            for(int j=0;j<neur.getWeights().size();j++)
+                list.add(neur.getWeights().get(j)); 
+            obj.put(label, list);
+            
+            //outJson[label] = hiddenLayer.get(i).weights;
         }
 
-        fs.writeFileSync('neurons.json'
-        , JSON.stringify(outJson, null, 4)
-    
-    );
-	}
+        try (FileWriter file = new FileWriter("neurons.json")) {
+            file.write(obj.toJSONString());
+            System.out.println(obj.toJSONString());
+            file.flush();
+        }
+        
+        //fs.writeFileSync('neurons.json', JSON.stringify(outJson, null, 4)
+    }
 
 	 
-    public void start()
-    {
+    public void start() throws IOException {
         if (startLearn == true) {
             LearningRule learningRule = new LearningRule(this);
             //learningRule.setInputLayer(inputLayer);
@@ -132,7 +150,7 @@ public class NeuralNetwork {
         } else {
             for (int i = 0; i < hiddenLayer.size(); i++) {
                 double output = hiddenLayer.get(i).compute();
-                outputLayer.set(i,output);
+                outputLayer.set(i, output);
             }
             //punem in fis json
             //console.log(root.outputLayer);

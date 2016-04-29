@@ -67,5 +67,9 @@ public class Neuron {
             this.weights.set(i,weights.get(i));
         }
     }
+    
+    public List<Double> getWeights() {
+        return this.weights;
+    }
 
 }
