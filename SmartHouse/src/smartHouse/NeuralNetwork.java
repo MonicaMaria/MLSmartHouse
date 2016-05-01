@@ -59,30 +59,37 @@ public class NeuralNetwork {
         Object obj = parser.parse(new FileReader("neurons.json"));
 
         JSONObject jsonObject = (JSONObject) obj;
+        
+        if (jsonObject.size() > 0) {
+            trainLoaded = true;
+        }
+        else trainLoaded = false;
 
         if (outputLayer.isEmpty()) {
             System.out.println("Add neurons error! Empty output layer..");
             return;
         }
+        
 
         for (int i = 0; i < outputLayer.size(); i++) {
             Neuron neuron = new Neuron(inputLayer);
             if (trainLoaded == false) {
                 neuron.randomize();
-            } else {
+            } 
+            else {
                 String label = "n_" + i;
                 List<Double> weights = new ArrayList<>();
                 //weights = trainLoad[label];
                 JSONArray wg = (JSONArray) jsonObject.get(label);
-                Iterator<String> iterator = wg.iterator();
-                while (iterator.hasNext()) {
-                    weights.add(Double.parseDouble(iterator.next()));
+                
+                for( int k = 0; k < wg.size(); k++ ) {
+                    double w = (double)wg.get(k);
+                    weights.add(w);
                 }
+                
                 if (weights.isEmpty()) {
-                    System.out.println("am ajuns random");
                     neuron.randomize();
                 } else {
-                    System.out.println("am ajuns");
                     neuron.setWeights(weights);
                 }
             }
@@ -96,7 +103,6 @@ public class NeuralNetwork {
             desiredOutput.add(output.get(i));
         }
         startLearn = true;
-
     }
 
     public List<Double> getDesiredOutput() {

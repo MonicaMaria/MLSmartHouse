@@ -63,8 +63,9 @@ public class Neuron {
      
     public void setWeights(List<Double> weights)
     {
+        this.weights.clear();
         for (int i = 0; i < weights.size(); i++) {
-            this.weights.set(i,weights.get(i));
+            this.weights.add(weights.get(i));
         }
     }
     

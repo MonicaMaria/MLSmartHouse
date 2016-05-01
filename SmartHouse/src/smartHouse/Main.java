@@ -26,13 +26,13 @@ public class Main {
         for( int i = 0; i < 31; i++ ) {
                 input.add(0.0);
         }
-        input.set(2, 1.0);
-        input.set(10, 1.0);
+        input.set(0, 1.0);
+        input.set(9, 1.0);
 
         List<Double> desiredOutput = new ArrayList<>();
         desiredOutput.add(1.0);
         desiredOutput.add(-1.0);
-        desiredOutput.add(1.0);
+        desiredOutput.add(-1.0);
         desiredOutput.add(-1.0);
 
         NeuralNetwork network = new NeuralNetwork();
