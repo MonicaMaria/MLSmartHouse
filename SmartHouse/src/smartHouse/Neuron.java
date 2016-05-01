@@ -60,7 +60,6 @@ public class Neuron {
             weights.set(i, aux);
         }
     }
-
      
     public void setWeights(List<Double> weights)
     {

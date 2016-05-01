@@ -158,6 +158,7 @@ public class NeuralNetwork {
             }
             //punem in fis json
             //console.log(root.outputLayer);
+            System.out.println(outputLayer);
         }
     }
 }
