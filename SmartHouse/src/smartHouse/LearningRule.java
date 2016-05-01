@@ -19,8 +19,8 @@ public class LearningRule {
     private List<Double> desiredOutput;	 
 
     */
-    private double trainConstant = 0.15;
-    private NeuralNetwork network;
+    private final double trainConstant = 0.01;
+    private final NeuralNetwork network;
     private List<Neuron>trainingSet;
 
     public LearningRule(NeuralNetwork netw) {

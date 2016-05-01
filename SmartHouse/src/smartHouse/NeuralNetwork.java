@@ -60,10 +60,7 @@ public class NeuralNetwork {
 
         JSONObject jsonObject = (JSONObject) obj;
         
-        if (jsonObject.size() > 0) {
-            trainLoaded = true;
-        }
-        else trainLoaded = false;
+        trainLoaded = jsonObject.size() > 0;
 
         if (outputLayer.isEmpty()) {
             System.out.println("Add neurons error! Empty output layer..");
@@ -74,6 +71,7 @@ public class NeuralNetwork {
         for (int i = 0; i < outputLayer.size(); i++) {
             Neuron neuron = new Neuron(inputLayer);
             if (trainLoaded == false) {
+                System.out.println("Randomize weights");
                 neuron.randomize();
             } 
             else {

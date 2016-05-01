@@ -41,6 +41,7 @@ public class Neuron {
      
     public void randomize()
     {
+        weights.clear();
         for (int i = 0; i < inputs.size(); i++) {
             // de facut random intre [-1, 1)
             weights.add(Math.random() * 2 - 1);
