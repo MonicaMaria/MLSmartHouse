@@ -1,6 +1,12 @@
 {
+	"uda_gazon" : {
+		"zi" : "duminica",
+		"ora" : 10
+	}
+	
 	"porneste_centrala" : {
 		"zi" : "duminica",
 		"ora" : 10
 	}
+	
 }

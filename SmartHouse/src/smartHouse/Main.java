@@ -5,14 +5,7 @@
  */
 package smartHouse;
 
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
@@ -23,14 +16,18 @@ public class Main {
 
     /**
      * @param args the command line arguments
+     * @throws java.io.IOException
+     * @throws org.json.simple.parser.ParseException
      */
     public static void main(String[] args) throws IOException, ParseException {
         // TODO code application logic here
-        
-        NeuralNetwork network = new NeuralNetwork(true);
+        NeuralNetwork network = new NeuralNetwork(true, null);
         network.start();
-        NeuralNetwork net2 = new NeuralNetwork(false);
+        NeuralNetwork net2 = new NeuralNetwork(false, "input.json");
         net2.start();
     }
     
+    public String getSuggestionList(NeuralNetwork net) {
+        return net.suggestions;
+    }
 }

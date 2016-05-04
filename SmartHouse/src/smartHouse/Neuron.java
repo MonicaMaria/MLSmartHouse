@@ -20,7 +20,7 @@ public class Neuron {
     public Neuron() {
         weights = new ArrayList<>();
     }
-    
+
     public Neuron(List<Double> inputLayer) {
         weights = new ArrayList<>();
         inputs = inputLayer;
@@ -28,29 +28,21 @@ public class Neuron {
 
     public double compute() {
         double sum = 0;
-        for (int i = 0; i < inputs.size(); i++) {
+        for (int i = 0; i < inputs.size(); i++)
             sum += this.weights.get(i) * inputs.get(i);
-        }
-        if (sum > 0) {
+        if (sum > 0.5)
             return 1;
-        } else {
+        else
             return -1;
-        }
     }
 
-     
-    public void randomize()
-    {
+    public void randomize() {
         weights.clear();
-        for (int i = 0; i < inputs.size(); i++) {
-            // de facut random intre [-1, 1)
-            weights.add(Math.random() * 2 - 1);
-        }
+        for (int i = 0; i < inputs.size(); i++)
+            weights.add(Math.random() * 2 - 1); // random intre [-1, 1)
     }
 
-     
-    public void train(double desiredOutput, double trainConstant)
-    {
+    public void train(double desiredOutput, double trainConstant) {
         double output = this.compute();
         double err = desiredOutput - output;
         double aux;
@@ -60,15 +52,13 @@ public class Neuron {
             weights.set(i, aux);
         }
     }
-     
-    public void setWeights(List<Double> weights)
-    {
+
+    public void setWeights(List<Double> weights) {
         this.weights.clear();
-        for (int i = 0; i < weights.size(); i++) {
+        for (int i = 0; i < weights.size(); i++)
             this.weights.add(weights.get(i));
-        }
     }
-    
+
     public List<Double> getWeights() {
         return this.weights;
     }

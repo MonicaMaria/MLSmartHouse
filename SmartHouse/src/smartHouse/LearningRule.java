@@ -14,42 +14,29 @@ import java.util.List;
  */
 public class LearningRule {
 
-    /*private List<Double> netInput; 
-    private List<Double> netOutput; 
-    private List<Double> desiredOutput;	 
-
-    */
     private final double trainConstant = 0.01;
     private final NeuralNetwork network;
-    private List<Neuron>trainingSet;
+    private List<Neuron> trainingSet;
 
     public LearningRule(NeuralNetwork netw) {
         network = netw;
         trainingSet = new ArrayList<>();
     }
 
-     
-    public void setTrainingSet(List<Neuron> neuronsTrainingSet)
-    {
+    public void setTrainingSet(List<Neuron> neuronsTrainingSet) {
         trainingSet = neuronsTrainingSet;
     }
 
-     
-    public List<Neuron> getTrainingSet()
-    {
+    public List<Neuron> getTrainingSet() {
         return trainingSet;
     }
 
-    public void train()
-    {
-        for (int i = 0; i < trainingSet.size(); i++) {
+    public void train() {
+        for (int i = 0; i < trainingSet.size(); i++)
             trainingSet.get(i).train(network.getDesiredOutput().get(i), trainConstant);
-        }
     }
 
-     
-    public void learn()
-    {
+    public void learn() {
         train();
     }
 }
